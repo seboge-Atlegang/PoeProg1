@@ -1,0 +1,77 @@
+﻿
+@model IEnumerable<ProgPoe.Models.MonthlyClaim>
+@{
+    ViewData["Title"] = "Lecturer Dashboard";
+}
+
+<div class="bg-white p-8 rounded-2xl shadow-lg w-full max-w-4xl mx-auto">
+    <div class="flex justify-between items-center mb-6">
+        <h1 class="text-3xl font-bold text-blue-700">Lecturer Dashboard</h1>
+        <a asp-controller="Account" asp-action="Logout"
+           class="bg-pink-200 text-pink-700 py-2 px-4 rounded-xl hover:bg-pink-300 transition-colors duration-300">
+            Logout
+        </a>
+    </div>
+
+    <p class="text-gray-600 mb-8">Welcome! Here you can manage your monthly claims.</p>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <!-- Claim Submission Section -->
+        <div class="bg-blue-50 p-6 rounded-2xl shadow-sm">
+            <h2 class="text-xl font-semibold mb-4 text-blue-600">Claim Submission</h2>
+            <p class="text-gray-700 mb-4">Click below to submit your monthly claim.</p>
+            <a asp-action="SubmitClaim"
+               class="w-full inline-block text-center bg-blue-600 text-white font-semibold py-3 px-6 rounded-xl hover:bg-blue-700 transition-colors duration-300 shadow-md">
+                Submit Monthly Claim
+            </a>
+        </div>
+
+        <!-- Document Upload Section (non-functional for now) -->
+        <div class="bg-blue-200 p-6 rounded-2xl shadow-sm">
+            <h2 class="text-xl font-semibold mb-4 text-blue-700">Upload Documents</h2>
+            <div class="border-2 border-dashed border-blue-400 rounded-xl p-6 text-center text-gray-500">
+                <svg xmlns="http://www.w3.org/2000/svg" class="mx-auto h-12 w-12 text-blue-500"
+                     fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                          d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
+                </svg>
+                <p class="mt-2">Drag and drop files here, or click to browse</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Claim Status Tracking Section -->
+    <div class="bg-gray-50 p-6 rounded-2xl shadow-sm mt-8">
+        <h2 class="text-xl font-semibold mb-4 text-gray-700">Claim Status</h2>
+        <p class="text-gray-600 mb-4">Track your submitted claims below:</p>
+
+        <div class="overflow-x-auto">
+            <table class="min-w-full divide-y divide-gray-200 rounded-xl">
+                <thead class="bg-gray-100 rounded-t-xl">
+                    <tr>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Claim ID</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date Submitted</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                    </tr>
+                </thead>
+                <tbody class="bg-white divide-y divide-gray-200">
+                    @foreach (var claim in Model)
+                    {
+                        <tr class="hover:bg-gray-50">
+                            <td class="px-6 py-4 whitespace-nowrap">#@claim.ClaimId</td>
+                            <td class="px-6 py-4 whitespace-nowrap">@claim.DateSubmitted.ToString("yyyy-MM-dd")</td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full
+                                    @(claim.Status == "Approved" ? "bg-green-100 text-green-800" :
+                                      claim.Status == "Declined" ? "bg-red-100 text-red-800" :
+                                      "bg-yellow-100 text-yellow-800")">
+                                    @claim.Status
+                                </span>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
